@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Sir Veritas Playlists</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .playlist {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .playlist iframe {
+            border-radius: 12px;
+            width: 100%;
+            height: 152px;
+            border: none;
+        }
+
+        /* Styling for adult content (playlist 3) */
+        #playlist3 iframe {
+            filter: blur(10px);
+            pointer-events: none;
+        }
+
+        #playlist3 .warning {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            text-align: center;
+            border-radius: 12px;
+            z-index: 10;
+        }
+
+        .warning p {
+            margin: 0 10px 0 0;
+        }
+
+        .warning button {
+            background-color: #1db954;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .warning button:hover {
+            background-color: #1aa34a;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.875rem;
+            margin-top: 20px;
+            color: #888;
+        }
+
+        a {
+            color: #1db954;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        // Function to embed playlists
+        function embedPlaylist(playlistDiv, playlistUrl) {
+            const iframe = document.createElement('iframe');
+            iframe.src = playlistUrl;
+            iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+            iframe.loading = "lazy";
+            iframe.style.borderRadius = '12px';
+            iframe.style.width = '100%';
+            iframe.style.height = '152px';
+            iframe.frameBorder = "0";
+            playlistDiv.appendChild(iframe);
+        }
+
+        // Confirm age function for adult content
+        function confirmAge(event) {
+            event.preventDefault();
+            const warningDiv = event.target.closest('.warning');
+            const playlistDiv = warningDiv.parentElement;
+
+            // Remove blur and enable interaction
+            playlistDiv.querySelector('iframe').style.filter = 'none';
+            playlistDiv.querySelector('iframe').style.pointerEvents = 'auto';
+
+            // Hide the warning div
+            warningDiv.style.display = 'none';
+        }
+
+        // On page load, embed playlists
+        document.addEventListener('DOMContentLoaded', function () {
+            // Embed non-adult playlists
+            const playlists = [
+                { selector: '#playlist1', url: 'https://open.spotify.com/embed/playlist/6Sqo1WD88mXqfkUvzmza2d?utm_source=generator&theme=0' },
+                { selector: '#playlist2', url: 'https://open.spotify.com/embed/playlist/1qxeaxmmnXOcoS96wdDPvn?utm_source=generator&theme=0' },
+                { selector: '#playlist4', url: 'https://open.spotify.com/embed/playlist/1HAMLhDjatQEsSm6Jv999c?utm_source=generator&theme=0' }
+            ];
+
+            playlists.forEach(playlist => {
+                const playlistDiv = document.querySelector(playlist.selector);
+                embedPlaylist(playlistDiv, playlist.url);
+            });
+
+            // Embed adult playlist 3 with blur and warning
+            const playlist3Div = document.querySelector('#playlist3');
+            embedPlaylist(playlist3Div, 'https://open.spotify.com/embed/playlist/2faWrOBmCh9g7nQnp5iPF6?utm_source=generator&theme=0');
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Sir Veritas Playlists</h1>
+
+        <!-- First playlist (Non-adult) -->
+        <div id="playlist1" class="playlist"></div>
+
+        <!-- Second playlist (Non-adult) -->
+        <div id="playlist2" class="playlist"></div>
+
+        <!-- Third playlist (Adult content) -->
+        <div id="playlist3" class="playlist">
+            <div class="warning">
+                <p>This playlist contains adult content. Are you 18 or older?</p>
+                <button onclick="confirmAge(event)">I am 18+</button>
+            </div>
+        </div>
+
+        <!-- Fourth playlist (Non-adult) -->
+        <div id="playlist4" class="playlist"></div>
+
+        <footer>
+            <p>Curated by <a href="#">Sir Veritas</a></p>
+        </footer>
+    </div>
+</body>
+</html>
